@@ -9,15 +9,30 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 
+var timestamp = new Date().getTime();
+
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  socket.emit('clientConnected', {
+    from: 'Admin',
+    text: 'Welcome to the chat room!',
+    createdAt: timestamp
+  });
+
+  socket.broadcast.emit('newUser', {
+    from: 'Admin',
+    text: 'New user joined the chat.',
+    createdAt: timestamp
+  });
+
   socket.on('createMessage', (message) => {
-    message.createdAt = new Date().getTime();
+    message.createdAt = timestamp;
     console.log('New message:', message);
     io.emit('newMessage', message)
+    // socket.broadcast.emit('newMessage', message)
   });
 
   socket.on('disconnect', () => {
