@@ -20,7 +20,7 @@ jQuery('#message-form').on('submit', function (e) {
   e.preventDefault();
 
   socket.emit('createMessage', {
-    from: 'User',
+    from: 'Anonymous',
     text: jQuery('[name=message]').val()
   }, function () {
 
