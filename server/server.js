@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
 
   socket.on('join', (params, callback) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
-      return callback('Name and room name are required');
+      return callback('Gib nen Namen ein oder geh zu GoForIt!');
     }
 
     socket.join(params.room);
@@ -30,8 +30,8 @@ io.on('connection', (socket) => {
     users.addUser(socket.id, params.name, params.room);
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat room!'));
-    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined.`));
+    socket.emit('newMessage', generateMessage('SYLC GOD', `Moin ${params.name}!`));
+    socket.broadcast.to(params.room).emit('newMessage', generateMessage('SYLC GOD', `${params.name} has joined.`));
 
     callback();
   });
@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createLocationMessage', (coords) => {
-    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+    io.emit('newLocationMessage', generateLocationMessage('SYLC God', coords.latitude, coords.longitude));
   });
 
   socket.on('disconnect', () => {
@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
 
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-      io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+      io.to(user.room).emit('newMessage', generateMessage('SYLC GOD', `${user.name} has left.`));
     }
   });
 });
